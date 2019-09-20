@@ -2,6 +2,7 @@ import random
 import math
 
 counter = 0
+RAND_MAX = 2147483647
 processList = []
 
 
@@ -14,7 +15,7 @@ class event():
 	
 	
 def urand():
-	return (random.randint(0, 4294967295)/4294967295)
+	return (random.randint(0, RAND_MAX)/RAND_MAX)
 	
 def genexp(lam):
 	x = 0
@@ -69,8 +70,10 @@ def sortByTimeRemaning(processList):
 	
 #print(checkForCompletion(processList))
 
-eventGenerator(10)
-printProcessList(processList)
-print("\n")
-sortByTimeRemaning(processList)
-printProcessList(processList)
+#eventGenerator(10)
+#printProcessList(processList)
+#print("\n")
+#sortByTimeRemaning(processList)
+#printProcessList(processList)
+
+print(genexp(6))
