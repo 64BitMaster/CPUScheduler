@@ -1,0 +1,7 @@
+﻿  main.cpp
+  Process.cpp
+C:\Users\cornb\Downloads\cpu-scheduling-des-master\cpu-scheduling-des-master\main.cpp(94,12): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  SchedulerSJF.cpp
+  Generating Code...
+C:\Users\cornb\Downloads\cpu-scheduling-des-master\cpu-scheduling-des-master\Process.cpp(15,12): warning C4244:  'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  CPP_CPU_SCH.vcxproj -> C:\Users\cornb\source\repos\CPP_CPU_SCH\Debug\CPP_CPU_SCH.exe
