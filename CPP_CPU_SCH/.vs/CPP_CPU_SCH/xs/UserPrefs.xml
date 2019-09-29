@@ -1,0 +1,44 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="code/main.cpp">
+    <Files>
+      <File FileName="code/main.cpp" Line="17" Column="27" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="CPP_CPU_SCH" expanded="True">
+            <Node name="Solution Items" expanded="True">
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Event.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Event.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/main.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Process.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Process.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/random.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/random.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Scheduler.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/Scheduler.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerFCFS.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerFCFS.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerPointer.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerPSJF.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerPSJF.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerRR.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerRR.h" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerSJF.cpp" selected="True" />
+              <Node name="/Users/Marc/Documents/PythonTest/CPUScheduler/CPP_CPU_SCH/code/SchedulerSJF.h" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>CPP_CPU_SCH/CPP_CPU_SCH.vcxproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x64" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

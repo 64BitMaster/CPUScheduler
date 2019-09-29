@@ -5,6 +5,28 @@ VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPP_CPU_SCH", "CPP_CPU_SCH\CPP_CPU_SCH.vcxproj", "{A402E55E-0E9B-45CE-81B2-9A79AF4A4F79}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C23EC87-6267-4B5F-B5AC-128990117216}"
+	ProjectSection(SolutionItems) = preProject
+		code\Event.cpp = code\Event.cpp
+		code\Event.h = code\Event.h
+		code\main.cpp = code\main.cpp
+		code\Process.cpp = code\Process.cpp
+		code\Process.h = code\Process.h
+		code\random.cpp = code\random.cpp
+		code\random.h = code\random.h
+		code\Scheduler.cpp = code\Scheduler.cpp
+		code\Scheduler.h = code\Scheduler.h
+		code\SchedulerFCFS.cpp = code\SchedulerFCFS.cpp
+		code\SchedulerFCFS.h = code\SchedulerFCFS.h
+		code\SchedulerPointer.h = code\SchedulerPointer.h
+		code\SchedulerPSJF.cpp = code\SchedulerPSJF.cpp
+		code\SchedulerPSJF.h = code\SchedulerPSJF.h
+		code\SchedulerRR.cpp = code\SchedulerRR.cpp
+		code\SchedulerRR.h = code\SchedulerRR.h
+		code\SchedulerSJF.cpp = code\SchedulerSJF.cpp
+		code\SchedulerSJF.h = code\SchedulerSJF.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

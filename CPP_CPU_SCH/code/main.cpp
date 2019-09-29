@@ -110,6 +110,6 @@ int main() {
 	}
 	scheduler->printStats();
 	deallocateEventQueue(eventQueue);
-	delete scheduler;
+	//delete scheduler;
 	return 0;
 }

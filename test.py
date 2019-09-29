@@ -1,18 +1,103 @@
 import random
 import math
+import datetime
+from enum import Enum, auto
 
+StartTime = datetime.datetime.now()
+CurrentTime = StartTime
+elapsedMilliseconds = 0
 counter = 0
+TOTAL_PROCESSES = 10000
 RAND_MAX = 2147483647
-processList = []
+
+readyQueue = []
+eventQueue = []
+finishedList = []
+
+currentLambda = 1
 
 
-# CurrentState of [0] = Ready, [1] = Terminated, [-1] = Complete
+
+class eventTypes(Enum):
+	CREATE_PROCESSES = auto()
+	MOVE_TO_READY = auto()
+	MARK_AS_COMPLETE = auto()
+	RETURN_TO_READY = auto()
+	
 class event():
-	def __init__(self, totalTime, currentState):
+	def __init__(self, eventType):
+		self.eventType = eventType
+	timeCreated = datetime.datetime.now()
+	
+class process():
+	def __init__(self, totalTime):
 		self.totalTime = totalTime
 		self.timeRemaining = totalTime
-		self.currentState = currentState
+		
+currentProcess = process(0)
 	
+
+def scheduleEvent(event):
+	eventQueue.append(event)
+
+def eventHandler():
+
+	currentEvent = eventQueue.pop(0)
+	if currentEvent.eventType == "CREATE_PROCESSES":
+		createProcesses()
+	elif currentEvent.eventType == "MOVE_TO_READY":
+		selectNextProcess()
+		CPUSimulator()
+	elif currentEvent.eventType == "MARK_AS_COMPLETE":
+		markAsComplete()
+	elif currentEvent.eventType == "RETURN_TO_READY":
+		returnToReady()
+	else:
+		return -1
+
+def simulator():
+
+	while checkForCompletion() == False:
+		scheduleEvent(event("CREATE_PROCESSES"))
+		scheduleEvent(event("MOVE_TO_READY"))
+		eventHandler()
+		
+		
+		
+		
+			
+			
+			
+		
+def createProcesses():
+	processGenerator(currentLambda)
+	
+def selectNextProcess():
+	global currentProcess
+	currentProcess = readyQueue.pop(0)
+	
+def markAsComplete():
+	finishedList.append(currentProcess)
+	
+def returnToReady():
+	readyQueue.append(currentProcess)
+	
+def CPUSimulator():
+	global elapsedMilliseconds
+	global counter
+	global readyQueue
+	
+	global currentProcess
+	print("Time Remaining: " + str(currentProcess.timeRemaining))
+	elapsedMilliseconds = elapsedMilliseconds + (currentProcess.timeRemaining/1000)
+	currentProcess.timeRemaining = 0
+	counter = counter + 1
+	
+	scheduleEvent(event("MARK_AS_COMPLETE"))
+	
+	
+	
+
 	
 def urand():
 	return (random.randint(0, RAND_MAX)/RAND_MAX)
@@ -26,54 +111,33 @@ def genexp(lam):
 	return x
 	
 	
-def eventGenerator(events):
-	for i in range(0, events):
-		nextTotalTime = random.randint(1,100)
-		processList.append(event(nextTotalTime, 0))
+def processGenerator(numberOfProcesses):
+	for i in range(0, numberOfProcesses):
+		nextTotalTime = int(1000*genexp(1/0.06))
+		if nextTotalTime == 0:
+			nextTotalTime = 1
+		print(nextTotalTime)
+		readyQueue.append(process(nextTotalTime))
 	
-def checkForCompletion(processList):
-	for i in processList:
-		if i.currentState == 0:
+def checkForCompletion():
+		if counter < TOTAL_PROCESSES:
 			return False
 		else:
 			return True
 
-def printProcessList(processList):
-	position = 1
-	
-	for i in processList:
-		printableOutput = "[Process " + str(position) + "]" + ": Total Time: " + str(i.totalTime) + ", Time Remaining: " + str(i.timeRemaining) + ", Current State: " + str(i.currentState)
-		print(printableOutput)
-		position = position + 1
 
-def sortByTimeRemaning(processList):
-	length = len(processList)
+def sortByTimeRemaning(readyQueue):
+	length = len(readyQueue)
 	
 	for i in range(length):
 		for j in range(0, length-i-1):
-			if processList[j].timeRemaining > processList[j+1].timeRemaining:
-				processList[j].timeRemaining, processList[j+1].timeRemaining = processList[j+1].timeRemaining, processList[j].timeRemaining
+			if readyQueue[j].timeRemaining > readyQueue[j+1].timeRemaining:
+				readyQueue[j].timeRemaining, readyQueue[j+1].timeRemaining = readyQueue[j+1].timeRemaining, readyQueue[j].timeRemaining
 
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
-#for i in range(0, 10):
-	#print(processList[i].totalTime)
-	
-#print(checkForCompletion(processList))
+print(str(int(1000*genexp(1/0.06))) + " milliseconds")
 
-#eventGenerator(10)
-#printProcessList(processList)
-#print("\n")
-#sortByTimeRemaning(processList)
-#printProcessList(processList)
-
-print(genexp(6))
+simulator()
+print(StartTime)
+print(elapsedMilliseconds)
