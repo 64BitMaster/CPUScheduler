@@ -11,9 +11,10 @@ counter = 0
 TOTAL_PROCESSES = 10000
 RAND_MAX = 2147483647
 
-sort = True
-RR = False
-currentQuantum = 0.1
+sort = False
+RR = True
+
+currentQuantum = 0.2
 
 readyQueue = []
 eventQueue = []
@@ -64,7 +65,7 @@ def eventHandler():
 		else:
 			return -1
 	else:
-		millisecondCounter = millisecondCounter + 100
+		millisecondCounter = millisecondCounter + 1
 
 def simulator():
 	global millisecondCounter
@@ -108,7 +109,7 @@ def CPUSimulator():
 	if RR == True:
 		# calculate how much work the CPU will do this cycle, idk: do we just use the Quantum as the number for milliseconds?
 		#I'll just use 100ms for now, because ¯\_(ツ)_/¯
-		workDone = 100
+		workDone = currentQuantum*1000
 		if (workDone > currentProcess.timeRemaining):
 			elapsedMilliseconds = elapsedMilliseconds + currentProcess.timeRemaining
 			millisecondCounter = millisecondCounter + currentProcess.timeRemaining
@@ -145,23 +146,38 @@ def genexp(lam):
 		x = (-1/lam)*math.log(u);
 	return x
 	
+def sortInsert(toBeInserted, readyQueue):
+	if not readyQueue:
+		readyQueue.append(toBeInserted)
+	else:
+		for j in range(len(readyQueue)):
+		#print(str(j) + "\n" + str(len(readyQueue)))
+			if readyQueue[j].timeRemaining > toBeInserted.timeRemaining:
+				readyQueue.insert(j, toBeInserted)
+				break
+	
+	
 	
 def processGenerator(numberOfProcesses):
 	global sort
+	global currentProcess
 	for i in range(0, numberOfProcesses):
 		nextTotalTime = int(1000*genexp(1/0.06))
+		
+		
 		if nextTotalTime == 0:
 			nextTotalTime = 1
 			
+		newProcess = process(nextTotalTime)
+			
 		if sort == True:
-			if len(readyQueue) == 0:
-				readyQueue.append(process(nextTotalTime))
-			else:
-				for j in range(len(readyQueue)):
-					#print(str(j) + "\n" + str(len(readyQueue)))
-					if readyQueue[j].timeRemaining > nextTotalTime:
-						readyQueue.insert(j, process(nextTotalTime))
-						break
+		
+			sortInsert(newProcess, readyQueue)
+			
+			if currentProcess.timeRemaining > readyQueue[0].timeRemaining:
+				temp = currentProcess
+				currentProcess = readyQueue[0].pop()
+				sortInsert(temp, readyQueue)
 		else:
 			readyQueue.append(process(nextTotalTime))
 	
