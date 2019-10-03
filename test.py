@@ -12,6 +12,8 @@ TOTAL_PROCESSES = 10000
 RAND_MAX = 2147483647
 
 sort = True
+RR = False
+currentQuantum = 0.1
 
 readyQueue = []
 eventQueue = []
@@ -70,7 +72,7 @@ def simulator():
 	
 	while checkForCompletion() == False:
 		#print(str(eventQueue[0].eventType))
-		if millisecondCounter > 1000:
+		if millisecondCounter >= 1000:
 			scheduleEvent(event("CREATE_PROCESSES"))
 			millisecondCounter = 0
 		
@@ -97,16 +99,36 @@ def CPUSimulator():
 	global counter
 	global readyQueue
 	global millisecondCounter
+	global RR
 	
 	global currentProcess
 	#print("Time Remaining: " + str(currentProcess.timeRemaining))
-	elapsedMilliseconds = elapsedMilliseconds + (currentProcess.timeRemaining)
-	millisecondCounter = millisecondCounter + (currentProcess.timeRemaining)
 	
-	currentProcess.timeRemaining = 0
-	counter = counter + 1
 	
-	scheduleEvent(event("MARK_AS_COMPLETE"))
+	if RR == True:
+		# calculate how much work the CPU will do this cycle, idk: do we just use the Quantum as the number for milliseconds?
+		#I'll just use 100ms for now, because ¯\_(ツ)_/¯
+		workDone = 100
+		if (workDone > currentProcess.timeRemaining):
+			elapsedMilliseconds = elapsedMilliseconds + currentProcess.timeRemaining
+			millisecondCounter = millisecondCounter + currentProcess.timeRemaining
+			currentProcess.timeRemaining = 0
+			counter = counter + 1
+			scheduleEvent(event("MARK_AS_COMPLETE"))
+		else:
+			currentProcess.timeRemaining = currentProcess.timeRemaining - workDone
+			elapsedMilliseconds = elapsedMilliseconds + workDone
+			millisecondCounter = millisecondCounter + workDone
+			scheduleEvent(event("RETURN_TO_READY"))
+		
+		
+	else:
+		elapsedMilliseconds = elapsedMilliseconds + (currentProcess.timeRemaining)
+		millisecondCounter = millisecondCounter + (currentProcess.timeRemaining)
+		currentProcess.timeRemaining = 0
+		counter = counter + 1
+		scheduleEvent(event("MARK_AS_COMPLETE"))
+	
 	
 	
 	
