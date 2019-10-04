@@ -11,10 +11,12 @@ counter = 0
 TOTAL_PROCESSES = 10000
 RAND_MAX = 2147483647
 
-sort = False
-RR = True
+CPUEmpty = True
 
-currentQuantum = 0.2
+sort = True
+RR = False
+
+currentQuantum = 0.001
 
 readyQueue = []
 eventQueue = []
@@ -40,15 +42,23 @@ class process():
 		
 currentProcess = process(0)
 	
+def printProcesses(readyQueue):
+	for i in range(len(readyQueue)):
+		print("Process[" + str(i+1) + "]: Time Left: " + str(readyQueue[i].timeRemaining))
+
+
+
 
 def scheduleEvent(event):
 	eventQueue.append(event)
 
 def eventHandler():
+	global CPUEmpty
 	global millisecondCounter
 	if eventQueue:
-		#print("\nEvent Queue is not empty")
+		
 		currentEvent = eventQueue.pop(0)
+		#print("Current Event: " + str(currentEvent.eventType))
 		if currentEvent.eventType == "CREATE_PROCESSES":
 			#print("Creating Processes")
 			createProcesses()
@@ -56,12 +66,15 @@ def eventHandler():
 			#print("Selecting next process")
 			selectNextProcess()
 			CPUSimulator()
+			CPUEmpty = False
 		elif currentEvent.eventType == "MARK_AS_COMPLETE":
 			#print("Marking process as complete")
 			markAsComplete()
+			CPUEmpty = True
 		elif currentEvent.eventType == "RETURN_TO_READY":
 			#print("fuck4")
 			returnToReady()
+			CPUEmpty = True
 		else:
 			return -1
 	else:
@@ -69,15 +82,17 @@ def eventHandler():
 
 def simulator():
 	global millisecondCounter
-	scheduleEvent(event("CREATE_PROCESSES"))
+	global CPUEmpty
+	#scheduleEvent(event("CREATE_PROCESSES"))
 	
 	while checkForCompletion() == False:
-		#print(str(eventQueue[0].eventType))
+	
 		if millisecondCounter >= 1000:
-			scheduleEvent(event("CREATE_PROCESSES"))
 			millisecondCounter = 0
+			scheduleEvent(event("CREATE_PROCESSES"))
+			#print("fuck")
 		
-		if readyQueue:
+		if readyQueue and CPUEmpty:
 			scheduleEvent(event("MOVE_TO_READY"))
 		eventHandler()
 		
@@ -93,6 +108,8 @@ def markAsComplete():
 	finishedList.append(currentProcess)
 	
 def returnToReady():
+	global readyQueue
+	global currentProcess
 	readyQueue.append(currentProcess)
 	
 def CPUSimulator():
@@ -101,25 +118,29 @@ def CPUSimulator():
 	global readyQueue
 	global millisecondCounter
 	global RR
-	
+	global currentQuantum
 	global currentProcess
-	#print("Time Remaining: " + str(currentProcess.timeRemaining))
+	#print("Current Process Time Remaining: " + str(currentProcess.timeRemaining))
+	
+	#printProcesses(readyQueue)
 	
 	
 	if RR == True:
 		# calculate how much work the CPU will do this cycle, idk: do we just use the Quantum as the number for milliseconds?
 		#I'll just use 100ms for now, because ¯\_(ツ)_/¯
 		workDone = currentQuantum*1000
-		if (workDone > currentProcess.timeRemaining):
+		if (workDone >= currentProcess.timeRemaining):
 			elapsedMilliseconds = elapsedMilliseconds + currentProcess.timeRemaining
 			millisecondCounter = millisecondCounter + currentProcess.timeRemaining
 			currentProcess.timeRemaining = 0
 			counter = counter + 1
+			#print("Current Process Time Remaining: " + str(currentProcess.timeRemaining))
 			scheduleEvent(event("MARK_AS_COMPLETE"))
 		else:
 			currentProcess.timeRemaining = currentProcess.timeRemaining - workDone
 			elapsedMilliseconds = elapsedMilliseconds + workDone
 			millisecondCounter = millisecondCounter + workDone
+			#print("Not done\n")
 			scheduleEvent(event("RETURN_TO_READY"))
 		
 		
@@ -182,10 +203,16 @@ def processGenerator(numberOfProcesses):
 			readyQueue.append(process(nextTotalTime))
 	
 def checkForCompletion():
-		if counter < TOTAL_PROCESSES:
-			return False
-		else:
-			return True
+	global counter
+	global TOTAL_PROCESSES
+	
+	#print("\nCurrent Counter: " + str(counter))
+	#print("Total: " + str(TOTAL_PROCESSES))
+	
+	if counter < TOTAL_PROCESSES:
+		return False
+	else:
+		return True
 
 
 def sortByTimeRemaning(readyQueue):
@@ -196,6 +223,7 @@ def sortByTimeRemaning(readyQueue):
 			if readyQueue[j].timeRemaining > readyQueue[j+1].timeRemaining:
 				readyQueue[j].timeRemaining, readyQueue[j+1].timeRemaining = readyQueue[j+1].timeRemaining, readyQueue[j].timeRemaining
 
+
 def resetSimulator():
 	global eventQueue
 	global readyQueue
@@ -203,12 +231,14 @@ def resetSimulator():
 	global counter
 	global StartTime
 	global millisecondCounter
+	global CPUEmpty
 	eventQueue.clear()
 	readyQueue.clear()
 	elapsedMilliseconds = 0
 	millisecondCounter = 0
 	counter = 0
 	StartTime = datetime.datetime.now()
+	CPUEmpty = True
 	
 
 #print(str(int(1000*genexp(1/0.06))) + " milliseconds")
@@ -219,13 +249,14 @@ def resetSimulator():
 
 
 for i in range(1, 31):
-	
+	#print(i)
 	currentLambda = i
 	simulator()
 	print("\nCurrent Lambda: " + str(i))
 	print("Start Time: " + str(StartTime))
 	print("Total Milliseconds: " + str(elapsedMilliseconds))
 	print("Final Length of readyQueue: " + str(len(readyQueue)))
+	#printProcesses(readyQueue)
 	resetSimulator()
 	
 	
